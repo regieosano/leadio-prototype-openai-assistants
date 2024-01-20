@@ -6,4 +6,4 @@ class PostMessageRequest(BaseModel):
 
 
 class PostMessageResponse(BaseModel):
-    reply: str
+    output: str
