@@ -13,19 +13,18 @@ from openaimodels.llm_models import chat
 from langchain.agents import AgentExecutor
 
 tools = [get_current_mortgage_rate]
-
 chat_history = []
+MEMORY_KEY = "chat_history"
 
 
 class UserAIChatService:
     def post_ai_user_chat_qna(self, content: PostMessageRequest):
-        MEMORY_KEY = "chat_history"
         useraichatprompt = ChatPromptTemplate.from_messages(
             [
                 SYSTEM_ROLE,
                 MessagesPlaceholder(variable_name=MEMORY_KEY),
                 ("user", "{input}"),
-                MessagesPlaceholder(variable_name="mortgage_scratchpad"),
+                MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
 
@@ -36,7 +35,7 @@ class UserAIChatService:
         agent = (
             {
                 "input": lambda x: x["input"],
-                "mortgage_scratchpad": lambda x: format_to_openai_function_messages(
+                "agent_scratchpad": lambda x: format_to_openai_function_messages(
                     x["intermediate_steps"]
                 ),
                 "chat_history": lambda x: x["chat_history"],
@@ -51,6 +50,7 @@ class UserAIChatService:
         result = agent_executor.invoke(
             {"input": content.chat, "chat_history": chat_history}
         )
+
         chat_history.extend(
             [
                 HumanMessage(content=content.chat),
