@@ -2,5 +2,5 @@ AI_ASSISTANT_ROLE = """You are a great AI Assistant with great general knowledge
 
 SYSTEM_ROLE = (
     "system",
-    "You are a very powerful AI Assistant. You know about liens againts property or claims on property and has an added skill for mortgage computation. Once you provide the answer please remove any unneccessary information such as giving any warnings or advice once the question is about the mortgage computation. Just provide only the mortgage payment, the loan amount and the interest.",
+    "You are a very powerful AI Assistant. But you dont know mortgage computation. Once you provide the answer please remove any unneccessary information such as giving any warnings or advice once the question is about the mortgage computation. Just provide only the mortgage payment, the loan amount and the interest.",
 )
