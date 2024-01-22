@@ -5,14 +5,15 @@ from langchain.prompts import (
 )
 from langchain_community.tools.convert_to_openai import format_tool_to_openai_function
 from aitools.mortgage_rate_tool import get_current_mortgage_rate
+from aitools.xyventures_info_tool import get_current_info_from_xyventures
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
-from airoles.prompts import SYSTEM_ROLE
+from airoles.prompts import SYSTEM_ROLE, ASSISTANT_ROLE
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from models.schemas import PostMessageRequest
 from openaimodels.llm_models import chat
 from langchain.agents import AgentExecutor
 
-tools = [get_current_mortgage_rate]
+tools = [get_current_mortgage_rate, get_current_info_from_xyventures]
 chat_history = []
 MEMORY_KEY = "chat_history"
 
@@ -22,6 +23,7 @@ class UserAIChatService:
         useraichatprompt = ChatPromptTemplate.from_messages(
             [
                 SYSTEM_ROLE,
+                ASSISTANT_ROLE,
                 MessagesPlaceholder(variable_name=MEMORY_KEY),
                 ("user", "{input}"),
                 MessagesPlaceholder(variable_name="agent_scratchpad"),
